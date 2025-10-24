@@ -11,6 +11,7 @@ const TeacherOTPPage = ({ onBack, onReport }) => {
   const [locationPermission, setLocationPermission] = useState(false);
   const [locationError, setLocationError] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [radius, setRadius] = useState(100); // meters
 
 
   const getCurrentLocation = () => {
@@ -235,11 +236,28 @@ const TeacherOTPPage = ({ onBack, onReport }) => {
                   {locationPermission ? 'Location Enabled' : 'Enable Location Permission'}
                 </button>
 
+                {/* Radius input for Geofencing */}
+                <div className="mt-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Geofence radius (meters)</label>
+                  <input
+                    type="number"
+                    min={10}
+                    step={1}
+                    // value={radius}
+                    onChange={(e) => {
+                      const val = Number(e.target.value);
+                      if (!Number.isNaN(val)) setRadius(val);
+                    }}
+                    className="w-full py-3 px-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent text-gray-800"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Enter the radius (in meters) used for geofencing.</p>
+                </div>
+
                 {/* Geofencing Info */}
                 <div className="bg-blue-50 rounded-lg p-4">
                   <h4 className="font-semibold text-blue-900 mb-2">Geofencing Settings</h4>
                   <div className="text-sm text-blue-800 space-y-1">
-                    <p>• Minimum distance: 100 meters</p>
+                    <p>• Minimum distance: {radius} meters</p>
                     <p>• Students must be within range</p>
                     <p>• Uses Haversine formula for accuracy</p>
                     <p>• Real-time location validation</p>
